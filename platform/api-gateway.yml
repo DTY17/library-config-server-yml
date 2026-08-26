@@ -7,25 +7,35 @@ spring:
 
   cloud:
     gateway:
-      server:
-        webflux:
-          routes:
-            - id: user-service
-              uri: lb://user-service
-              predicates:
-                - Path=/api/users/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders: "*"
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
 
-            - id: book-service
-              uri: lb://book-service
-              predicates:
-                - Path=/api/books/**
+        - id: book-service
+          uri: lb://book-service
+          predicates:
+            - Path=/api/books/**
 
-            - id: record-service
-              uri: lb://record-service
-              predicates:
-                - Path=/api/records/**
+        - id: record-service
+          uri: lb://record-service
+          predicates:
+            - Path=/api/records/**
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://vm-node-a.platform:8761/eureka/,http://vm-node-b.platform:8761/eureka/,http://vm-node-c.platform:8761/eureka/ #http://localhost:8761/eureka/
