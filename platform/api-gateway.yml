@@ -1,44 +1,92 @@
 server:
   port: 8081
 
+# spring:
+#   application:
+#     name: api-gateway
+
+#   cloud:
+#     gateway:
+#       globalcors:
+#         cors-configurations:
+#           '[/**]':
+#             allowedOrigins: "*"
+#             allowedMethods:
+#               - GET
+#               - POST
+#               - PUT
+#               - DELETE
+#               - OPTIONS
+#               - PATCH
+#             allowedHeaders: "*"
+#       routes:
+#         - id: user-service
+#           uri: lb://USER-SERVICE
+#           predicates:
+#             - Path=/api/users/**
+
+#         - id: book-service
+#           uri: lb://BOOK-SERVICE
+#           predicates:
+#             - Path=/api/books/**
+
+#         - id: record-service
+#           uri: lb://RECORD-SERVICE
+#           predicates:
+#             - Path=/api/records/**
+
+# eureka:
+#   client:
+#     service-url:
+#       defaultZone: http://vm-node-a.platform:8888/eureka/,http://vm-node-b.platform:8888/eureka/,http://vm-node-c.platform:8888/eureka/ #http://localhost:8761/eureka/
+
 spring:
   application:
     name: api-gateway
 
   cloud:
     gateway:
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins: "*"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-              - PATCH
-            allowedHeaders: "*"
-      routes:
-        - id: user-service
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/api/users/**
+      server:
+        webflux:
 
-        - id: book-service
-          uri: lb://BOOK-SERVICE
-          predicates:
-            - Path=/api/books/**
+          discovery:
+            locator:
+              lower-case-service-id: true
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins: "*"
+                allowedMethods:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - OPTIONS
+                  - PATCH
+                allowedHeaders: "*"
+          routes:
+            - id: user-service
+              uri: lb://USER-SERVICE
+              predicates:
+                  - Path=/api/users/**
 
-        - id: record-service
-          uri: lb://RECORD-SERVICE
-          predicates:
-            - Path=/api/records/**
+            - id: book-service
+              uri: lb://BOOK-SERVICE
+              predicates:
+                  - Path=/api/books/**
 
+            - id: record-service
+              uri: lb://RECORD-SERVICE
+              predicates:
+                  - Path=/api/records/**
+
+
+    loadbalancer:
+      cache:
+        enabled: true
 eureka:
   client:
     service-url:
       defaultZone: http://vm-node-a.platform:8888/eureka/,http://vm-node-b.platform:8888/eureka/,http://vm-node-c.platform:8888/eureka/ #http://localhost:8761/eureka/
-
 
   
