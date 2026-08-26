@@ -21,17 +21,17 @@ spring:
             allowedHeaders: "*"
       routes:
         - id: user-service
-          uri: lb://user-service
+          uri: lb://USER-SERVICE
           predicates:
             - Path=/api/users/**
 
         - id: book-service
-          uri: lb://book-service
+          uri: lb://BOOK-SERVICE
           predicates:
             - Path=/api/books/**
 
         - id: record-service
-          uri: lb://record-service
+          uri: lb://RECORD-SERVICE
           predicates:
             - Path=/api/records/**
 
